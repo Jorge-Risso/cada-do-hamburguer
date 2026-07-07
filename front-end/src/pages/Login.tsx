@@ -16,18 +16,30 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const response = await fetch("http://localhost:3000/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password }),
-    });
-    const data = await response.json();
-    console.log(data);
+    try {
+      if (!email || !password) {
+        setError("Email e senha são obrigatórios!");
+        return;
+      }
+      const response = await fetch("http://localhost:3000/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        setError(data.message);
+      }
+    } catch (error) {
+      console.error("Erro ao fazer login:", error);
+      setError("Erro ao fazer login. Tente novamente mais tarde.");
+    }
   }
 
   return (
@@ -78,6 +90,7 @@ const Login = () => {
               {showPassword ? "🙈" : "👁️"}
             </button>
           </div>
+          <p className="text-red-500 text-sm font-bold text-center">{error}</p>
         </div>
 
         {/* Botão */}
