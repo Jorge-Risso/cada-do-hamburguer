@@ -1,22 +1,29 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router-dom";
 import Button from "../components/Button";
-
-// Input ajustado para responsividade
-const Input = (props: React.InputHTMLAttributes<HTMLInputElement>) => {
-  return (
-    <input
-      {...props}
-      className="w-full text-xsm px-3 py-2 bg-white text-[#32343E] rounded-md outline-none placeholder-[#32343E] transition focus:ring-2 focus:ring-[#C92A0E]"
-    />
-  );
-};
+import type { UserInterface } from "../types/User";
+import { useContext } from "react";
+import { UserContext } from "../contexts/UserContext";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
+
+  const { setUser } = useContext(UserContext);
+
+  const navigate = useNavigate();
+
+  // Input ajustado para responsividade
+  const Input = (props: React.InputHTMLAttributes<HTMLInputElement>) => {
+    return (
+      <input
+        {...props}
+        className="w-full text-xsm px-3 py-2 bg-white text-[#32343E] rounded-md outline-none placeholder-[#32343E] transition focus:ring-2 focus:ring-[#C92A0E]"
+      />
+    );
+  };
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -31,10 +38,16 @@ const Login = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ email, password }),
+        credentials: "include",
       });
       const data = await response.json();
       if (!response.ok) {
         setError(data.message);
+      }
+      if (response.status === 200) {
+        setError("");
+        navigate("/");
+        setUser(data.user);
       }
     } catch (error) {
       console.error("Erro ao fazer login:", error);

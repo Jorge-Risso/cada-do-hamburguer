@@ -1,10 +1,9 @@
-import { Link } from "react-router";
-import Header from "../components/Header";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   return (
-    <div>
-      <Link to="/login">Login</Link> / <Link to="/register">Registrar</Link>
+    <div className="text-white">
+      <p>ROta inicial</p>
     </div>
   );
 };

@@ -1,6 +1,6 @@
 const Pedidos = () => {
   return (
-    <div>
+    <div className="text-white">
       <p>Pagina de pedidos</p>
     </div>
   );
