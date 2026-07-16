@@ -3,7 +3,7 @@ import { prisma } from "./db.js";
 import bcrypt from "bcrypt";
 import { Router } from "express";
 import { auth, login, register, logout } from "./controller/userController.js";
-
+import { authMiddleware } from "./middlewares/auth-Middleware.js";
 export const router = Router();
 
 router.get("/", async (req, res) => {
@@ -13,5 +13,5 @@ router.get("/", async (req, res) => {
 
 router.post("/login", login);
 router.post("/register", register);
-router.get("/me", auth);
-router.post("/logout", logout);
+router.get("/me", authMiddleware, auth);
+router.post("/logout", authMiddleware, logout);

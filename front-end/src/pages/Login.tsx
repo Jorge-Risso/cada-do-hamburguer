@@ -9,7 +9,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
 
   const { setUser } = useContext(UserContext);
 
@@ -29,7 +29,7 @@ const Login = () => {
     e.preventDefault();
     try {
       if (!email || !password) {
-        setError("Email e senha são obrigatórios!");
+        setMessage("Email e senha são obrigatórios!");
         return;
       }
       const response = await fetch("http://localhost:3000/login", {
@@ -42,16 +42,16 @@ const Login = () => {
       });
       const data = await response.json();
       if (!response.ok) {
-        setError(data.message);
+        setMessage(data.message);
       }
       if (response.status === 200) {
-        setError("");
+        setMessage("");
         navigate("/");
         setUser(data.user);
       }
     } catch (error) {
       console.error("Erro ao fazer login:", error);
-      setError("Erro ao fazer login. Tente novamente mais tarde.");
+      setMessage("Erro ao fazer login. Tente novamente mais tarde.");
     }
   }
 
@@ -103,7 +103,9 @@ const Login = () => {
               {showPassword ? "🙈" : "👁️"}
             </button>
           </div>
-          <p className="text-red-500 text-sm font-bold text-center">{error}</p>
+          <p className="text-red-500 text-sm font-bold text-center">
+            {message}
+          </p>
         </div>
 
         {/* Botão */}

@@ -29,7 +29,10 @@ const Header = () => {
         method: "POST",
         credentials: "include",
       });
-      const data = await response.json();
+      if (!response.ok) {
+        return;
+      }
+      setUser(null);
     } catch (error) {
       console.error("Erro ao fazer logout:", error);
     }
@@ -60,21 +63,23 @@ const Header = () => {
         </Link>
         {user ? (
           <div className="flex items-center gap-8 text-white">
-            <div className="flex text-[#F2DAAC] gap-2 items-center">
-              <Link to="/">
-                <div className={getNavItemClass("/")}>
-                  <Box size={18} />
+            {user.type === "admin" && (
+              <div className="flex text-[#F2DAAC] gap-2 items-center">
+                <Link to="/">
+                  <div className={getNavItemClass("/")}>
+                    <Box size={18} />
+                  </div>
+                </Link>
+                <Link to="/pedidos">
+                  <div className={getNavItemClass("/pedidos")}>
+                    <LayoutDashboard size={18} />
+                  </div>
+                </Link>
+                <div className="flex w-[35px] h-[35px] rounded-md border-1 cursor-pointer items-center justify-center">
+                  <Plus size={18} />
                 </div>
-              </Link>
-              <Link to="/pedidos">
-                <div className={getNavItemClass("/pedidos")}>
-                  <LayoutDashboard size={18} />
-                </div>
-              </Link>
-              <div className="flex w-[35px] h-[35px] rounded-md border-1 cursor-pointer items-center justify-center">
-                <Plus size={18} />
               </div>
-            </div>
+            )}
             <div className="relative cursor-pointer">
               <p className="absolute text-[#161410]  -top-4 -right-4 bg-[#F2DAAC] w-5 h-5 rounded-full flex justify-center items-center ">
                 1
