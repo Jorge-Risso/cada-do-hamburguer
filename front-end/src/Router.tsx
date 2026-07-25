@@ -4,7 +4,7 @@ import Login from "./pages/Login.tsx";
 import Register from "./pages/Register.tsx";
 import Home from "./pages/Home.tsx";
 import Header from "./components/Header.tsx";
-import Pedidos from "./pages/Pedidos.tsx";
+import Pedido from "./pages/Pedido.tsx";
 import PublicRoute from "./components/PublicRoute.tsx";
 
 const Layout = () => {
@@ -26,7 +26,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/pedidos",
-        element: <Pedidos />,
+        element: <Pedido />,
       },
     ],
   },
@@ -44,6 +44,14 @@ export const router = createBrowserRouter([
     element: (
       <PublicRoute>
         <Register />
+      </PublicRoute>
+    ),
+  },
+  {
+    path: "/pedidos",
+    element: (
+      <PublicRoute>
+        <Pedido />
       </PublicRoute>
     ),
   },

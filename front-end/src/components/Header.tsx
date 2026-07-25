@@ -53,8 +53,8 @@ const Header = () => {
   };
   return (
     <header className="bg-[#161410]">
-      <div className="max-w-[737px] mx-auto flex items-center justify-between px-4 py-3">
-        <Link to="/">
+      <div className="max-w-[737px] mx-auto flex items-center justify-between md:w-[737px] md:p-0 px-4 py-8">
+        <Link to="/" className="py-2">
           <img
             src="/burguer-logo.png"
             alt="Burger House"

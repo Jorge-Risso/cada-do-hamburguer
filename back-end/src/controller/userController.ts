@@ -136,3 +136,5 @@ export const auth = async (req: Request, res: Response) => {
     res.status(401).json({ message: "Não autorizado" });
   }
 };
+
+export const pedidos = async (req: Request, res: Response) => {};

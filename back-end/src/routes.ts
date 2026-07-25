@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import { Router } from "express";
 import { auth, login, register, logout } from "./controller/userController.js";
 import { authMiddleware } from "./middlewares/auth-Middleware.js";
+import { getProducts } from "./controller/ProductController.js";
 export const router = Router();
 
 router.get("/", async (req, res) => {
@@ -15,3 +16,6 @@ router.post("/login", login);
 router.post("/register", register);
 router.get("/me", authMiddleware, auth);
 router.post("/logout", authMiddleware, logout);
+
+//Rotas de produto
+router.get("/products", getProducts);
