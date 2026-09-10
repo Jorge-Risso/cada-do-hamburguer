@@ -6,21 +6,38 @@ const Home = () => {
   const [category, setCategory] = useState("hamburguer");
   const [products, setProducts] = useState<ProductTipe[]>([]);
 
+  const categoryMap: Record<string, string> = {
+    hamburguer: "hamburguer",
+    hamburgers: "hamburguer",
+    bebida: "bebida",
+    bebidas: "bebida",
+    porcao: "porcao",
+    porcoes: "porcao",
+    porcaoes: "porcao",
+    porcaoo: "porcao",
+    todos: "todos",
+  };
+
+  const normalizeCategory = (value: string) => {
+    const cleaned = value
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z]/g, "");
+
+    return categoryMap[cleaned] ?? cleaned;
+  };
+
   const handleChangeCategory = (newCategory: string) => {
     setCategory(newCategory);
   };
 
   const getCategoryClass = (categoryName: string) => {
-    const elementSelect =
-      "cursor-pointer border border-[#F2DAAC] font-bold w-25 h-7 md:h-9 md:w-28text-sm text-sm md:text-md rounded-md text-[#161410] bg-[#F2DAAC] flex justify-center items-center";
-
-    const elementNoSelect =
-      "cursor-pointer border border-[#F2DAAC] font-bold w-25 h-7 md:h-9 md:w-28text-sm text-sm md:text-md rounded-md text-[#F2DAAC] bg-[#161410] hover:text-[#161410] hover:bg-[#F2DAAC] flex justify-center items-center";
-    if (category == categoryName) {
-      return elementSelect;
-    } else {
-      return elementNoSelect;
+    if (normalizeCategory(category) === normalizeCategory(categoryName)) {
+      return "category-chip active cursor-pointer rounded-full border px-4 py-2 text-sm font-bold md:px-5";
     }
+
+    return "category-chip inactive cursor-pointer rounded-full border px-4 py-2 text-sm font-bold md:px-5";
   };
 
   const getProducts = async () => {
@@ -34,7 +51,8 @@ const Home = () => {
   };
 
   const filteredProduct = products.filter((product) => {
-    return product.category === category;
+    if (normalizeCategory(category) === "todos") return true;
+    return normalizeCategory(product.category) === normalizeCategory(category);
   });
 
   useEffect(() => {
@@ -42,29 +60,71 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="text-white md:w-[737px]  mx-auto mb-2 w-full px-4">
-      <div className="flex md:my-3 gap-2 py-4">
-        <div
-          onClick={() => handleChangeCategory("hamburguer")}
-          className={getCategoryClass("hamburguer")}
-        >
-          Hamburguer
+    <div className="mx-auto mb-8 w-full max-w-6xl px-4 py-6 md:px-6">
+      <section className="hero-banner mb-8 rounded-[2rem] p-5 md:p-8">
+        <div className="relative z-10 max-w-xl">
+          <span className="hero-badge mb-4">
+            <span>🔥</span>
+            Especial da casa
+          </span>
+          <h1 className="mb-3 text-3xl font-black leading-none text-white md:text-5xl">
+            Experiência premium em cada mordida.
+          </h1>
+          <p className="max-w-md text-sm text-[#f5e7c2] md:text-base">
+            Carne selecionada, pão artesanal e combinações cuidadosamente
+            preparadas para entregar sabor, textura e qualidade excepcionais.
+          </p>
+
+          <div className="mt-6 flex flex-wrap gap-3">
+            <button className="action-button px-5 py-3 text-sm md:px-6">
+              Ver cardápio
+            </button>
+            <button className="rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-bold text-white transition hover:border-[#d4af69]/40 hover:text-[#d4af69]">
+              Ofertas exclusivas
+            </button>
+          </div>
         </div>
-        <div
-          onClick={() => handleChangeCategory("bebida")}
-          className={getCategoryClass("bebida")}
-        >
-          Bebidas
+      </section>
+
+      <section className="mb-6">
+        <div className="mb-4 flex items-center justify-between">
+          <p className="text-sm font-bold uppercase tracking-[0.22em] text-[#d4af69]">
+            Catálogo
+          </p>
+          <p className="text-sm text-[#d0b998]">
+            {filteredProduct.length} itens disponíveis
+          </p>
         </div>
-        <div
-          onClick={() => handleChangeCategory("porção")}
-          className={getCategoryClass("porção")}
-        >
-          Porções
+
+        <div className="flex flex-wrap gap-2 md:gap-3">
+          <button
+            onClick={() => handleChangeCategory("hamburguer")}
+            className={getCategoryClass("hamburguer")}
+          >
+            Hambúrguer
+          </button>
+          <button
+            onClick={() => handleChangeCategory("bebida")}
+            className={getCategoryClass("bebida")}
+          >
+            Bebidas
+          </button>
+          <button
+            onClick={() => handleChangeCategory("porcao")}
+            className={getCategoryClass("porcao")}
+          >
+            Porções
+          </button>
+          <button
+            onClick={() => handleChangeCategory("todos")}
+            className={getCategoryClass("todos")}
+          >
+            Todos
+          </button>
         </div>
-      </div>
-      <p className="uppercase font-bold text-[#F2DAAC] mb-2">{category}</p>
-      <div className="flex flex-col gap-1 md:gap-3">
+      </section>
+
+      <div className="flex flex-col gap-4 md:gap-5">
         {filteredProduct.map((product) => (
           <Product
             id={product.id}
@@ -74,8 +134,21 @@ const Home = () => {
             img={product.img}
             category={product.category}
             key={product.id}
+            onDelete={(deletedId) => {
+              setProducts((currentProducts) =>
+                currentProducts.filter(
+                  (currentProduct) => currentProduct.id !== deletedId,
+                ),
+              );
+            }}
           />
         ))}
+
+        {filteredProduct.length === 0 && (
+          <div className="rounded-2xl border border-dashed border-white/15 bg-white/5 p-8 text-center text-[#d9cab6]">
+            Nenhum item disponível nesta categoria no momento.
+          </div>
+        )}
       </div>
     </div>
   );

@@ -12,3 +12,26 @@ export const getProducts = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Erro no servidor!" });
   }
 };
+
+export const deleteProduct = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const findProduct = await prisma.product.findUnique({
+      where: {
+        id: Number(id),
+      },
+    });
+    if (!findProduct) {
+      return res.status(404).json({ message: "Produto não encontrado" });
+    }
+    await prisma.product.delete({
+      where: {
+        id: Number(id),
+      },
+    });
+    res.json({ message: `Produto com id ${id} deletado com sucesso!` });
+  } catch (error) {
+    res.status(500).json({ message: "Erro no servidor!" });
+    return;
+  }
+};

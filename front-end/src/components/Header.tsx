@@ -3,9 +3,17 @@ import { UserContext } from "../contexts/UserContext";
 import { useContext, useEffect } from "react";
 import { LogOut, ShoppingCart, Box, LayoutDashboard, Plus } from "lucide-react";
 
-const Header = () => {
+type HeaderProps = {
+  setIsCartOpen: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+const Header = ({ setIsCartOpen }: HeaderProps) => {
   const { user, setUser } = useContext(UserContext);
   const location = useLocation();
+
+  const toggleCart = () => {
+    setIsCartOpen((prev) => !prev);
+  };
 
   const handleAuthUser = async () => {
     try {
@@ -44,60 +52,76 @@ const Header = () => {
 
   const getNavItemClass = (path: string) => {
     const baseClass =
-      "flex w-[35px] h-[35px] rounded-md border-1 cursor-pointer items-center justify-center";
+      "flex h-10 w-10 items-center justify-center rounded-xl border transition-all duration-200";
     if (location.pathname === path) {
-      return `${baseClass} text-[#161410] bg-[#F2DAAC]`;
-    } else {
-      return baseClass;
+      return `${baseClass} border-[#d4af69] bg-[#d4af69] text-[#1f1917] shadow-lg shadow-[#b88939]/20`;
     }
+    return `${baseClass} border-white/10 bg-white/5 text-white/70 hover:border-[#d4af69]/40 hover:text-[#d4af69]`;
   };
+
   return (
-    <header className="bg-[#161410]">
-      <div className="max-w-[737px] mx-auto flex items-center justify-between md:w-[737px] md:p-0 px-4 py-8">
-        <Link to="/" className="py-2">
-          <img
-            src="/burguer-logo.png"
-            alt="Burger House"
-            className="h-20 w-auto"
-          />
+    <header className="header-shell">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 md:px-6">
+        <Link to="/" className="flex items-center gap-3">
+          <div className="brand-mark flex h-12 w-12 items-center justify-center rounded-2xl p-2">
+            <img
+              src="/burguer-logo.png"
+              alt="Burger House"
+              className="h-10 w-auto"
+            />
+          </div>
+          <div>
+            <p className="text-[0.6rem] font-bold uppercase tracking-[0.26em] text-[#d4af69]">
+              Burger House
+            </p>
+            <p className="text-lg font-black text-white">Casa do Hambúrguer</p>
+          </div>
         </Link>
+
         {user ? (
-          <div className="flex items-center gap-8 text-white">
+          <div className="flex items-center gap-4 text-white md:gap-6">
             {user.type === "admin" && (
-              <div className="flex text-[#F2DAAC] gap-2 items-center">
-                <Link to="/">
+              <div className="flex items-center gap-2 text-[#f5e7c2]">
+                <Link to="/" title="Cardápio">
                   <div className={getNavItemClass("/")}>
                     <Box size={18} />
                   </div>
                 </Link>
-                <Link to="/pedidos">
+                <Link to="/pedidos" title="Pedidos">
                   <div className={getNavItemClass("/pedidos")}>
                     <LayoutDashboard size={18} />
                   </div>
                 </Link>
-                <div className="flex w-[35px] h-[35px] rounded-md border-1 cursor-pointer items-center justify-center">
+                <div className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-xl border border-white/10 bg-white/5 text-white/70 transition hover:border-[#d4af69]/40 hover:text-[#d4af69]">
                   <Plus size={18} />
                 </div>
               </div>
             )}
-            <div className="relative cursor-pointer">
-              <p className="absolute text-[#161410]  -top-4 -right-4 bg-[#F2DAAC] w-5 h-5 rounded-full flex justify-center items-center ">
+
+            <button
+              type="button"
+              title="Carrinho"
+              onClick={toggleCart}
+              className="relative cursor-pointer rounded-xl border border-white/10 bg-white/5 p-2.5 text-[#d4af69] transition hover:border-[#d4af69]/40"
+            >
+              <span className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-[#7a2c2c] text-[10px] font-bold text-white">
                 1
-              </p>
-              <ShoppingCart size={18} className="" />
-            </div>
-            <div className="flex items-center gap-2">
-              <p>{user?.name}</p>
+              </span>
+              <ShoppingCart size={18} />
+            </button>
+
+            <div className="flex items-center gap-3 rounded-full border border-white/10 bg-white/5 px-3 py-2">
+              <p className="text-sm font-medium text-white">{user?.name}</p>
               <LogOut
                 size={18}
-                className="cursor-pointer"
+                className="cursor-pointer text-[#d4af69] transition hover:text-white"
                 onClick={() => handleLogout()}
               />
             </div>
           </div>
         ) : (
           <Link to="/login">
-            <div className="bg-[#F2DAAC] text-[#161410] px-4 py-2 rounded-md cursor-pointer font-semibold hover:opacity-90 transition flex items-center justify-center">
+            <div className="flex items-center justify-center rounded-full bg-linear-to-r from-[#d4af69] to-[#b88939] px-5 py-2.5 font-bold text-[#1f1917] shadow-lg shadow-[#b88939]/25 transition hover:brightness-110">
               Entrar
             </div>
           </Link>

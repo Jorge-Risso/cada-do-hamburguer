@@ -3,8 +3,11 @@ import { prisma } from "./db.js";
 import bcrypt from "bcrypt";
 import { Router } from "express";
 import { auth, login, register, logout } from "./controller/userController.js";
-import { authMiddleware } from "./middlewares/auth-Middleware.js";
-import { getProducts } from "./controller/ProductController.js";
+import {
+  authMiddleware,
+  adminMiddleware,
+} from "./middlewares/auth-Middleware.js";
+import { getProducts, deleteProduct } from "./controller/ProductController.js";
 export const router = Router();
 
 router.get("/", async (req, res) => {
@@ -19,3 +22,9 @@ router.post("/logout", authMiddleware, logout);
 
 //Rotas de produto
 router.get("/products", getProducts);
+router.delete(
+  "/product-delete/:id",
+  authMiddleware,
+  adminMiddleware,
+  deleteProduct,
+);

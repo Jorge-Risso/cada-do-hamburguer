@@ -1,1 +1,83 @@
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Manrope:wght@400;500;600;700;800&display=swap");
 @import "tailwindcss";
+
+:root {
+  --bg: #110d0c;
+  --bg-soft: #1a1413;
+  --panel: #1f1917;
+  --panel-alt: #2b211f;
+  --panel-strong: #382d2b;
+  --primary: #d4af69;
+  --primary-strong: #b88939;
+  --secondary: #f5e7c2;
+  --accent: #7a2c2c;
+  --text: #f8f1e7;
+  --muted: #d0b998;
+  --line: rgba(212, 175, 105, 0.25);
+  --success: #7ae8a4;
+  --shadow: rgba(0, 0, 0, 0.45);
+  --font-body: "Manrope", "Segoe UI", sans-serif;
+  --font-display: "Cormorant Garamond", Georgia, serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top, rgba(212, 175, 105, 0.14), transparent 30%),
+    linear-gradient(180deg, #110d0c 0%, #1a1413 100%);
+  color: var(--text);
+  font-family: var(--font-body);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.product-name,
+.hero-banner h1,
+.auth-card h1 {
+  font-family: var(--font-display);
+  letter-spacing: 0.02em;
+}
+
+p,
+span,
+button,
+input,
+select,
+textarea,
+a,
+li {
+  font-family: var(--font-body);
+}
+
+#root {
+  min-height: 100vh;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+a {
+  text-decoration: none;
+}

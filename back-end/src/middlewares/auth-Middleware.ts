@@ -22,3 +22,19 @@ export const authMiddleware = (
     return res.status(401).json({ message: "Não autorizado." });
   }
 };
+
+export const adminMiddleware = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  const user = (req as any).user;
+
+  if (user?.type !== "admin") {
+    return res.status(403).json({
+      message: "Credenciais inválidas para acessar esta rota.",
+    });
+  }
+
+  next();
+};

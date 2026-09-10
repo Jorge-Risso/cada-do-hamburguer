@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "../components/Button";
-import type { UserInterface } from "../types/User";
 import { useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
 
@@ -20,7 +19,7 @@ const Login = () => {
     return (
       <input
         {...props}
-        className="w-full text-xsm px-3 py-2 bg-white text-[#32343E] rounded-md outline-none placeholder-[#32343E] transition focus:ring-2 focus:ring-[#C92A0E]"
+        className="auth-input w-full rounded-xl px-3 py-2.5 text-sm outline-none transition focus:border-[#d4af69] focus:ring-2 focus:ring-[#d4af69]/30"
       />
     );
   };
@@ -56,10 +55,10 @@ const Login = () => {
   }
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-linear-to-br from-[#161410] to-[#1f1a17] px-4">
+    <div className="auth-shell flex min-h-screen items-center justify-center px-4">
       <form
         onSubmit={handleSubmit}
-        className="bg-[#1e1a17] p-8 sm:p-10 rounded-2xl shadow-2xl w-full max-w-md flex flex-col gap-6"
+        className="auth-card w-full max-w-md rounded-[2rem] p-8 sm:p-10"
       >
         {/* Logo e título */}
         <div className="flex flex-col items-center">
@@ -112,14 +111,14 @@ const Login = () => {
         <Button
           title="Login"
           type="submit"
-          variant="cursor-pointer w-full bg-linear-to-r from-[#C92A0E] to-[#FF5E2B] hover:from-[#a81e05] hover:to-[#e03a1a] py-3 rounded-md font-bold text-white text-sm transition-all duration-200 transform hover:scale-105 active:scale-95"
+          variant="cursor-pointer w-full bg-linear-to-r from-[#d4af69] to-[#b88939] hover:from-[#c79d4d] hover:to-[#a9722c] py-3 rounded-md font-bold text-[#1f1917] text-sm transition-all duration-200 transform hover:scale-105 active:scale-95"
         />
 
         {/* Link de cadastro */}
         <p className="text-gray-400 text-center text-sm">
           Não possui uma conta?{" "}
           <Link
-            className="text-[#C92A0E] hover:text-[#FF5E2B] font-semibold transition-colors duration-300"
+            className="auth-link font-semibold transition-colors duration-300 hover:text-[#f5e7c2]"
             to="/register"
           >
             Clique Aqui!

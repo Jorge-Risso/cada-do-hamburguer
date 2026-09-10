@@ -99,10 +99,10 @@ const Register = () => {
   }
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-linear-to-br from-[#161410] to-[#1f1a17] px-4">
+    <div className="auth-shell flex min-h-screen items-center justify-center px-4">
       <form
         onSubmit={handleSubmit}
-        className="bg-[#1e1a17] p-8 sm:p-10 rounded-2xl shadow-2xl w-full max-w-md flex flex-col gap-6"
+        className="auth-card w-full max-w-md rounded-[2rem] p-8 sm:p-10"
       >
         <div className="flex flex-col items-center">
           <Link to="/">
@@ -194,13 +194,13 @@ const Register = () => {
         <Button
           title="Cadastrar"
           type="submit"
-          variant="cursor-pointer w-full bg-linear-to-r from-[#C92A0E] to-[#FF5E2B] hover:from-[#a81e05] hover:to-[#e03a1a] py-3 rounded-md font-bold text-white text-sm transition-all duration-200 transform hover:scale-105 active:scale-95"
+          variant="cursor-pointer w-full bg-linear-to-r from-[#d4af69] to-[#b88939] hover:from-[#c79d4d] hover:to-[#a9722c] py-3 rounded-md font-bold text-[#1f1917] text-sm transition-all duration-200 transform hover:scale-105 active:scale-95"
         />
 
         <p className="text-gray-400 text-center text-sm">
           Já possui uma conta?{" "}
           <Link
-            className="text-[#C92A0E] hover:text-[#FF5E2B] font-semibold transition-colors duration-300"
+            className="auth-link font-semibold transition-colors duration-300 hover:text-[#f5e7c2]"
             to="/login"
           >
             Faça login
