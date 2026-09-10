@@ -19,13 +19,18 @@ const Cart = ({ closeCart }: CartTypeProps) => {
         </p>
       </div>
 
-      <div className="mt-5 flex-1 space-y-4">
-        <CartItem />
-        <CartItem />
-        <CartItem />
-        <CartItem />
-        <CartItem />
-        <CartItem />
+      <div className="mt-5 flex-1 overflow-y-auto pr-1 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-[#1b1413] [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-[#d4af69]/70 [&::-webkit-scrollbar-thumb:hover]:bg-[#d4af69]">
+        <div className="space-y-4">
+          <CartItem />
+          <CartItem />
+          <CartItem />
+          <CartItem />
+          <CartItem />
+          <CartItem />
+          <CartItem />
+          <CartItem />
+          <CartItem />
+        </div>
       </div>
 
       <div className="mt-4 border-t border-[#d4af69]/15 pt-4">
