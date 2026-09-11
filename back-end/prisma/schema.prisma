@@ -15,16 +15,25 @@ model User {
   password String
   cep String
   type String
+  cartItems CartItem[]
 }
 
-model Product{
-  id Int @id @default(autoincrement())
-  name String
+model Product {
+  id          Int        @id @default(autoincrement())
+  name        String
   description String
-  price Float
-  category String 
-  img String
-  createdAt DateTime @default(now())
+  price       Float
+  category    String
+  img         String
+  createdAt   DateTime   @default(now())
+  cartItems   CartItem[] // para relacionamentos 1-N
 }
 
-
+model CartItem {
+  id        Int     @id @default(autoincrement())
+  userId   Int
+  user     User    @relation(fields: [userId], references: [id])
+  productId Int
+  product   Product @relation(fields: [productId], references: [id]) //lembrando que  esse trecho é para o próprio prisma, n vai para o banco
+  quantity  Int
+}

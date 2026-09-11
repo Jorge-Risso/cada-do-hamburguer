@@ -17,7 +17,6 @@ const Home = () => {
     porcaoo: "porcao",
     todos: "todos",
   };
-
   const normalizeCategory = (value: string) => {
     const cleaned = value
       .toLowerCase()

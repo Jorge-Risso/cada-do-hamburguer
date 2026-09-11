@@ -24,12 +24,6 @@ const Cart = ({ closeCart }: CartTypeProps) => {
           <CartItem />
           <CartItem />
           <CartItem />
-          <CartItem />
-          <CartItem />
-          <CartItem />
-          <CartItem />
-          <CartItem />
-          <CartItem />
         </div>
       </div>
 
