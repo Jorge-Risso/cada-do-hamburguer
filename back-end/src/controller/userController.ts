@@ -2,6 +2,7 @@ import type { Request, Response } from "express";
 import { prisma } from "../db.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { env } from "../config/env.js";
 
 export const login = async (req: Request, res: Response) => {
   try {
@@ -43,7 +44,7 @@ export const login = async (req: Request, res: Response) => {
       cep: user.cep,
     };
 
-    const token = jwt.sign(userInfos, process.env.JWT_SECRET as string, {
+    const token = jwt.sign(userInfos, env.jwtSecret, {
       expiresIn: "1h",
     });
 
@@ -130,7 +131,7 @@ export const register = async (req: Request, res: Response) => {
 export const auth = async (req: Request, res: Response) => {
   try {
     const token = req.cookies.user;
-    const decodedToken = jwt.verify(token, process.env.JWT_SECRET as string);
+    const decodedToken = jwt.verify(token, env.jwtSecret);
     res.status(200).json(decodedToken);
   } catch (error) {
     res.status(401).json({ message: "Não autorizado" });

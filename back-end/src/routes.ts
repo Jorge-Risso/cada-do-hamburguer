@@ -13,13 +13,9 @@ import {
   addCartItem,
   updateCartItemQuantity,
 } from "./controller/cartItemController.js";
+import { createOrder } from "./controller/orderController.js";
 
 export const router = Router();
-
-router.get("/", async (req, res) => {
-  const users = await prisma.user.findMany();
-  res.json(users);
-});
 
 router.post("/login", login);
 router.post("/register", register);
@@ -42,3 +38,6 @@ router.patch(
   authMiddleware,
   updateCartItemQuantity,
 );
+
+//Orders
+router.post("/create-order", authMiddleware, createOrder);

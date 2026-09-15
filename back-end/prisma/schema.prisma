@@ -16,6 +16,7 @@ model User {
   cep String
   type String
   cartItems CartItem[]
+  orders Order[]
 }
 
 model Product {
@@ -27,6 +28,7 @@ model Product {
   img         String
   createdAt   DateTime   @default(now())
   cartItems   CartItem[] // para relacionamentos 1-N
+  orderItems  OrderItem[]
 }
 
 model CartItem {
@@ -36,4 +38,26 @@ model CartItem {
   productId Int
   product   Product @relation(fields: [productId], references: [id]) //lembrando que  esse trecho é para o próprio prisma, n vai para o banco
   quantity  Int
+}
+
+model Order {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  total     Float
+  status    String   @default("pending")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  items     OrderItem[]
+}
+
+
+model OrderItem {
+  id        Int     @id @default(autoincrement())
+  orderId   Int
+  order     Order   @relation(fields: [orderId], references: [id])
+  productId Int
+  product   Product @relation(fields: [productId], references: [id])
+  quantity  Int
+  price     Float
 }

@@ -1,5 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
+import { env } from "../config/env.js";
 
 export const authMiddleware = (
   req: Request,
@@ -8,10 +9,7 @@ export const authMiddleware = (
 ) => {
   try {
     const { user } = req.cookies;
-    const decoded = jwt.verify(user, process.env.JWT_SECRET as string);
-    if (!process.env.JWT_SECRET) {
-      return res.status(500).json({ message: "Erro interno do servidor." });
-    }
+    const decoded = jwt.verify(user, env.jwtSecret);
     if (!decoded) {
       return res.status(401).json({ message: "Não autorizado." });
     } else {
