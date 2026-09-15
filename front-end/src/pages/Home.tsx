@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import Product from "../components/Product";
-import type { ProductTipe } from "../types/Product";
+import type { ProductType } from "../types/Product";
 
 const Home = () => {
   const [category, setCategory] = useState("hamburguer");
-  const [products, setProducts] = useState<ProductTipe[]>([]);
+  const [products, setProducts] = useState<ProductType[]>([]);
 
   const categoryMap: Record<string, string> = {
     hamburguer: "hamburguer",

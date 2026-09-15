@@ -5,11 +5,14 @@ import "./index.css";
 import "./App.css";
 import { router } from "./Router.tsx";
 import { UserProvider } from "./contexts/UserContext.tsx";
+import { CartItemsProvider } from "./contexts/CartItemsContext.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <UserProvider>
-      <RouterProvider router={router} />
+      <CartItemsProvider>
+        <RouterProvider router={router} />
+      </CartItemsProvider>
     </UserProvider>
   </StrictMode>,
 );

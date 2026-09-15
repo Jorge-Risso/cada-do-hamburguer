@@ -1,10 +1,11 @@
 import { ShoppingCart } from "lucide-react";
-import type { ProductTipe } from "../types/Product";
+import type { ProductType } from "../types/Product";
 import { formatterPrice } from "../utils/formatterPrice";
 import { UserContext } from "../contexts/UserContext";
-import { useContext } from "react";
+import { useContext, useState } from "react";
+import { CartItemsContext } from "../contexts/CartItemsContext";
 
-type ProductProps = ProductTipe & {
+type ProductProps = ProductType & {
   onDelete: (id: number) => void;
 };
 
@@ -17,6 +18,7 @@ const Product = ({
   onDelete,
 }: ProductProps) => {
   const { user } = useContext(UserContext);
+  const [showAddedMessage, setShowAddedMessage] = useState(false);
 
   const handleDeleteProduct = async (id: number) => {
     try {
@@ -37,6 +39,51 @@ const Product = ({
       onDelete(id);
     } catch (error) {
       console.error("Erro ao deletar produto:", error);
+    }
+  };
+
+  const { setCartItems } = useContext(CartItemsContext);
+
+  const handleAddToCart = async (productId: number) => {
+    try {
+      const response = await fetch("http://localhost:3000/cart-items", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ productId, quantity: 1 }),
+        credentials: "include",
+      });
+      if (!response.ok) {
+        console.error(
+          "Erro ao adicionar item ao carrinho:",
+          response.statusText,
+        );
+        return;
+      }
+
+      const data = await response.json();
+
+      setCartItems((prev) => {
+        const itemExists = prev.some((item) => item.productId === productId);
+
+        if (itemExists) {
+          return prev.map((item) =>
+            item.productId === productId
+              ? {
+                  ...item,
+                  quantity: Number(item.quantity) + 1,
+                  product: data.product ?? item.product,
+                }
+              : item,
+          );
+        }
+
+        return [...prev, data];
+      });
+
+      setShowAddedMessage(true);
+      window.setTimeout(() => setShowAddedMessage(false), 1500);
+    } catch (error) {
+      console.error("Erro ao adicionar item ao carrinho:", error);
     }
   };
 
@@ -65,11 +112,28 @@ const Product = ({
 
         <div className="product-footer">
           <p className="product-price">R${formatterPrice(price)}</p>
-          <button type="button" className="action-button px-4 py-2.5 text-sm">
+          <button
+            type="button"
+            className="action-button px-4 py-2.5 text-sm cursor-pointer"
+            onClick={() => {
+              handleAddToCart(id);
+            }}
+          >
             <ShoppingCart size={16} />
             Adicionar
           </button>
         </div>
+
+        <p
+          aria-live="polite"
+          className={`text-xs font-bold text-[#a8f0c2] transition-all duration-300 ${
+            showAddedMessage
+              ? "opacity-100 translate-y-0"
+              : "opacity-0 translate-y-1"
+          }`}
+        >
+          Produto adicionado ao carrinho!
+        </p>
       </div>
     </div>
   );

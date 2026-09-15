@@ -2,6 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
 import { useContext, useEffect } from "react";
 import { LogOut, ShoppingCart, Box, LayoutDashboard, Plus } from "lucide-react";
+import { CartItemsContext } from "../contexts/CartItemsContext";
 
 type HeaderProps = {
   setIsCartOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -10,6 +11,12 @@ type HeaderProps = {
 const Header = ({ setIsCartOpen }: HeaderProps) => {
   const { user, setUser } = useContext(UserContext);
   const location = useLocation();
+  const { cartItems } = useContext(CartItemsContext);
+
+  const totalItensCarrinho = cartItems.reduce(
+    (total, item) => total + Number(item.quantity || 0),
+    0,
+  );
 
   const toggleCart = () => {
     setIsCartOpen((prev) => !prev);
@@ -61,25 +68,27 @@ const Header = ({ setIsCartOpen }: HeaderProps) => {
 
   return (
     <header className="header-shell">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 md:px-6">
-        <Link to="/" className="flex items-center gap-3">
-          <div className="brand-mark flex h-12 w-12 items-center justify-center rounded-2xl p-2">
+      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-3 py-3 sm:px-4 md:px-6">
+        <Link to="/" className="flex min-w-0 items-center gap-3">
+          <div className="brand-mark flex h-10 w-10 items-center justify-center rounded-2xl p-2 sm:h-12 sm:w-12">
             <img
               src="/burguer-logo.png"
               alt="Burger House"
-              className="h-10 w-auto"
+              className="h-8 w-auto sm:h-10"
             />
           </div>
-          <div>
-            <p className="text-[0.6rem] font-bold uppercase tracking-[0.26em] text-[#d4af69]">
+          <div className="min-w-0">
+            <p className="text-[0.55rem] font-bold uppercase tracking-[0.22em] text-[#d4af69] sm:text-[0.6rem]">
               Burger House
             </p>
-            <p className="text-lg font-black text-white">Casa do Hambúrguer</p>
+            <p className="truncate text-sm font-black text-white sm:text-base md:text-lg">
+              Casa do Hambúrguer
+            </p>
           </div>
         </Link>
 
         {user ? (
-          <div className="flex items-center gap-4 text-white md:gap-6">
+          <div className="flex flex-wrap items-center justify-end gap-2 text-white sm:gap-3 md:gap-4">
             {user.type === "admin" && (
               <div className="flex items-center gap-2 text-[#f5e7c2]">
                 <Link to="/" title="Cardápio">
@@ -105,23 +114,25 @@ const Header = ({ setIsCartOpen }: HeaderProps) => {
               className="relative cursor-pointer rounded-xl border border-white/10 bg-white/5 p-2.5 text-[#d4af69] transition hover:border-[#d4af69]/40"
             >
               <span className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-[#7a2c2c] text-[10px] font-bold text-white">
-                1
+                {totalItensCarrinho}
               </span>
               <ShoppingCart size={18} />
             </button>
 
-            <div className="flex items-center gap-3 rounded-full border border-white/10 bg-white/5 px-3 py-2">
-              <p className="text-sm font-medium text-white">{user?.name}</p>
+            <div className="flex max-w-[170px] items-center gap-2 rounded-full border border-white/10 bg-white/5 px-2.5 py-2 sm:px-3">
+              <p className="truncate text-xs font-medium text-white sm:text-sm">
+                {user?.name}
+              </p>
               <LogOut
                 size={18}
-                className="cursor-pointer text-[#d4af69] transition hover:text-white"
+                className="ml-auto shrink-0 cursor-pointer text-[#d4af69] transition hover:text-white"
                 onClick={() => handleLogout()}
               />
             </div>
           </div>
         ) : (
-          <Link to="/login">
-            <div className="flex items-center justify-center rounded-full bg-linear-to-r from-[#d4af69] to-[#b88939] px-5 py-2.5 font-bold text-[#1f1917] shadow-lg shadow-[#b88939]/25 transition hover:brightness-110">
+          <Link to="/login" className="ml-auto">
+            <div className="flex items-center justify-center rounded-full bg-linear-to-r from-[#d4af69] to-[#b88939] px-4 py-2.5 text-sm font-bold text-[#1f1917] shadow-lg shadow-[#b88939]/25 transition hover:brightness-110 sm:px-5">
               Entrar
             </div>
           </Link>

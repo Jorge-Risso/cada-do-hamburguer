@@ -8,6 +8,12 @@ import {
   adminMiddleware,
 } from "./middlewares/auth-Middleware.js";
 import { getProducts, deleteProduct } from "./controller/ProductController.js";
+import {
+  getCartItems,
+  addCartItem,
+  updateCartItemQuantity,
+} from "./controller/cartItemController.js";
+
 export const router = Router();
 
 router.get("/", async (req, res) => {
@@ -27,4 +33,12 @@ router.delete(
   authMiddleware,
   adminMiddleware,
   deleteProduct,
+);
+
+router.get("/cart-items", authMiddleware, getCartItems);
+router.post("/cart-items", authMiddleware, addCartItem);
+router.patch(
+  "/cart-items/update-quantity",
+  authMiddleware,
+  updateCartItemQuantity,
 );

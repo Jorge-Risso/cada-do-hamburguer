@@ -115,7 +115,7 @@ const Login = () => {
         />
 
         {/* Link de cadastro */}
-        <p className="text-gray-400 text-center text-sm">
+        <p className="text-gray-400 text-center text-sm pt-3">
           Não possui uma conta?{" "}
           <Link
             className="auth-link font-semibold transition-colors duration-300 hover:text-[#f5e7c2]"

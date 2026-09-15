@@ -1,8 +1,12 @@
-export type ProductTipe = {
+export type ProductType = {
   id: number;
   name: string;
   description: string;
   price: number;
   img: string;
   category: string;
+};
+
+export type ProductProps = ProductType & {
+  onDelete: (id: number) => void;
 };
