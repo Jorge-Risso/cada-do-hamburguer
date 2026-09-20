@@ -78,11 +78,14 @@ const Cart = ({ closeCart }: CartTypeProps) => {
       setIsSubmittingOrder(true);
       setOrderMessage("");
 
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/create-order", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/create-order`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+        },
+      );
 
       const data = await response.json();
 

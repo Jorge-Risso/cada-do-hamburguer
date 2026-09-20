@@ -23,9 +23,12 @@ export const CartItemsProvider = ({
       }
 
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/cart-items", {
-          credentials: "include",
-        });
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/cart-items`,
+          {
+            credentials: "include",
+          },
+        );
 
         if (!response.ok) {
           setCartItems([]);

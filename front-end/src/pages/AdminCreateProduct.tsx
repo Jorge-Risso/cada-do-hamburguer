@@ -64,7 +64,7 @@ const AdminCreateProduct = () => {
       formData.append("category", category);
       formData.append("img", img);
 
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/products", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/products`, {
         method: "POST",
         credentials: "include",
         body: formData,

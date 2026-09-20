@@ -1,8 +1,13 @@
 import { Check, LoaderCircle, ShoppingCart, X } from "lucide-react";
+
 import type { ProductType } from "../types/Product";
+
 import { formatterPrice } from "../utils/formatterPrice";
+
 import { UserContext } from "../contexts/UserContext";
+
 import { useContext, useState } from "react";
+
 import { CartItemsContext } from "../contexts/CartItemsContext";
 
 type ProductProps = ProductType & {
@@ -18,6 +23,7 @@ const Product = ({
   onDelete,
 }: ProductProps) => {
   const { user } = useContext(UserContext);
+
   const [showAddedMessage, setShowAddedMessage] = useState(false);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [feedbackMessage, setFeedbackMessage] = useState("");
@@ -33,32 +39,42 @@ const Product = ({
       if (!id) {
         return;
       }
+
       setIsDeleting(true);
+
       const response = await fetch(
-        `http://fetch(`${import.meta.env.VITE_API_URL}:3000/product-delete/${id}`,
+        `${import.meta.env.VITE_API_URL}/product-delete/${id}`,
         {
           method: "DELETE",
         },
       );
+
       if (!response.ok) {
         console.error("Erro ao deletar produto:", response.statusText);
+
         setFeedbackType("error");
         setFeedbackMessage("Não foi possível excluir o produto.");
         setShowAddedMessage(true);
+
         window.setTimeout(() => setShowAddedMessage(false), 1800);
+
         return;
       }
 
       setFeedbackType("success");
       setFeedbackMessage("Produto removido com sucesso!");
       setShowAddedMessage(true);
+
       window.setTimeout(() => setShowAddedMessage(false), 1800);
+
       onDelete(id);
     } catch (error) {
       console.error("Erro ao deletar produto:", error);
+
       setFeedbackType("error");
       setFeedbackMessage("Erro ao excluir o produto.");
       setShowAddedMessage(true);
+
       window.setTimeout(() => setShowAddedMessage(false), 1800);
     } finally {
       setIsDeleting(false);
@@ -72,20 +88,33 @@ const Product = ({
 
     try {
       setIsAddingToCart(true);
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/cart-items", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ productId, quantity: 1 }),
-        credentials: "include",
-      });
+
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/cart-items`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            productId,
+            quantity: 1,
+          }),
+          credentials: "include",
+        },
+      );
+
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
+
         setFeedbackType("error");
         setFeedbackMessage(
           errorData.message || "Não foi possível adicionar o item.",
         );
         setShowAddedMessage(true);
+
         window.setTimeout(() => setShowAddedMessage(false), 1800);
+
         return;
       }
 
@@ -112,12 +141,15 @@ const Product = ({
       setFeedbackType("success");
       setFeedbackMessage("Produto adicionado ao carrinho!");
       setShowAddedMessage(true);
+
       window.setTimeout(() => setShowAddedMessage(false), 1800);
     } catch (error) {
       console.error("Erro ao adicionar item ao carrinho:", error);
+
       setFeedbackType("error");
       setFeedbackMessage("Erro ao adicionar o produto.");
       setShowAddedMessage(true);
+
       window.setTimeout(() => setShowAddedMessage(false), 1800);
     } finally {
       setIsAddingToCart(false);
@@ -132,7 +164,9 @@ const Product = ({
         <div className="product-header">
           <div className="product-text">
             <span className="product-tag">Popular</span>
+
             <p className="product-name">{name}</p>
+
             <p className="product-description">{description}</p>
           </div>
 
@@ -150,6 +184,7 @@ const Product = ({
 
         <div className="product-footer">
           <p className="product-price">R${formatterPrice(price)}</p>
+
           <button
             type="button"
             disabled={isAddingToCart}
@@ -163,6 +198,7 @@ const Product = ({
             ) : (
               <ShoppingCart size={16} />
             )}
+
             {isAddingToCart ? "Adicionando..." : "Adicionar"}
           </button>
         </div>
@@ -173,11 +209,12 @@ const Product = ({
             feedbackType === "success" ? "text-[#a8f0c2]" : "text-[#ff9d9d]"
           } ${
             showAddedMessage
-              ? "opacity-100 translate-y-0"
-              : "opacity-0 translate-y-1"
+              ? "translate-y-0 opacity-100"
+              : "translate-y-1 opacity-0"
           }`}
         >
           {feedbackType === "success" ? <Check size={14} /> : <X size={14} />}
+
           {feedbackMessage || "Produto adicionado ao carrinho!"}
         </p>
       </div>
