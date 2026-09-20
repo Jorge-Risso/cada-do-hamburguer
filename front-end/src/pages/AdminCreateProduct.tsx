@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { z } from "zod";
 import Input from "../components/Input";
 import Button from "../components/Button";
 
@@ -11,13 +10,6 @@ const productCategories = [
   "sobremesa",
   "acompanhamento",
 ];
-
-const createProductSchema = z.object({
-  name: z.string().min(1),
-  description: z.string().min(1),
-  price: z.coerce.number(),
-  category: z.string().min(1),
-});
 
 const AdminCreateProduct = () => {
   const navigate = useNavigate();
@@ -51,7 +43,9 @@ const AdminCreateProduct = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (isSubmitting) return;
+    if (isSubmitting) {
+      return;
+    }
 
     if (!name.trim() || !description.trim() || !img || !price) {
       setMessage("Preencha todos os campos antes de salvar.");
@@ -64,8 +58,8 @@ const AdminCreateProduct = () => {
 
       const formData = new FormData();
 
-      formData.append("name", name);
-      formData.append("description", description);
+      formData.append("name", name.trim());
+      formData.append("description", description.trim());
       formData.append("price", price);
       formData.append("category", category);
       formData.append("img", img);
@@ -119,6 +113,7 @@ const AdminCreateProduct = () => {
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div className="grid gap-5 md:grid-cols-2">
+            {/* Nome */}
             <div className="space-y-2 md:col-span-2">
               <label className="block text-sm font-bold uppercase tracking-[0.14em] text-[#d4af69]">
                 Nome do produto
@@ -131,6 +126,7 @@ const AdminCreateProduct = () => {
               />
             </div>
 
+            {/* Descrição */}
             <div className="space-y-2 md:col-span-2">
               <label className="block text-sm font-bold uppercase tracking-[0.14em] text-[#d4af69]">
                 Descrição
@@ -145,6 +141,7 @@ const AdminCreateProduct = () => {
               />
             </div>
 
+            {/* Categoria */}
             <div className="space-y-2">
               <label className="block text-sm font-bold uppercase tracking-[0.14em] text-[#d4af69]">
                 Categoria
@@ -163,6 +160,7 @@ const AdminCreateProduct = () => {
               </select>
             </div>
 
+            {/* Preço */}
             <div className="space-y-2">
               <label className="block text-sm font-bold uppercase tracking-[0.14em] text-[#d4af69]">
                 Valor
@@ -178,6 +176,7 @@ const AdminCreateProduct = () => {
               />
             </div>
 
+            {/* Imagem */}
             <div className="space-y-2 md:col-span-2">
               <label className="block text-sm font-bold uppercase tracking-[0.14em] text-[#d4af69]">
                 Imagem do produto
@@ -202,6 +201,7 @@ const AdminCreateProduct = () => {
             </div>
           </div>
 
+          {/* Mensagem */}
           {message && (
             <p
               className={`text-sm font-bold ${
@@ -212,6 +212,7 @@ const AdminCreateProduct = () => {
             </p>
           )}
 
+          {/* Botão */}
           <div className="flex justify-end pt-2">
             <Button
               title={isSubmitting ? "Salvando..." : "Salvar produto"}
@@ -225,4 +226,5 @@ const AdminCreateProduct = () => {
     </div>
   );
 };
+
 export default AdminCreateProduct;
