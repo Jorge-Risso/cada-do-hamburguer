@@ -72,7 +72,7 @@ const Product = ({
 
     try {
       setIsAddingToCart(true);
-      const response = await fetch("http://localhost:3000/cart-items", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/cart-items", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ productId, quantity: 1 }),

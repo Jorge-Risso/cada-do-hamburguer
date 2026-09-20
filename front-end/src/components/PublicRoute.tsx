@@ -11,7 +11,7 @@ const PublicRoute = ({ children }: { children: ReactNode }) => {
 
     const checkAuth = async () => {
       try {
-        const response = await fetch("http://localhost:3000/me", {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/me", {
           credentials: "include",
         });
 

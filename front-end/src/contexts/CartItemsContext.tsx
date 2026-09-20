@@ -23,7 +23,7 @@ export const CartItemsProvider = ({
       }
 
       try {
-        const response = await fetch("http://localhost:3000/cart-items", {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/cart-items", {
           credentials: "include",
         });
 
