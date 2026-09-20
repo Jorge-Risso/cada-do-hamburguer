@@ -25,10 +25,10 @@ const CartItem = ({
       <img
         src={imgUrl}
         alt={title}
-        className="w-[100px] rounded-xl object-cover"
+        className="h-[90px] w-[90px] rounded-xl object-cover sm:h-25 sm:w-25"
       />
-      <div className="flex-1">
-        <p className="font-bold uppercase tracking-wide text-sm text-[#f4eadf]">
+      <div className="flex-1 min-w-0">
+        <p className="truncate text-sm font-bold uppercase tracking-wide text-[#f4eadf]">
           {title}
         </p>
         <p className="mt-1 font-bold text-[#d0b998]">
@@ -38,7 +38,8 @@ const CartItem = ({
           <button
             type="button"
             onClick={onDecrease}
-            className="rounded-md border border-[#d4af69]/20 bg-[#1b1413] p-1 transition hover:border-[#d4af69]/40"
+            aria-label="Diminuir quantidade"
+            className="rounded-md border border-[#d4af69]/20 bg-[#1b1413] p-1.5 transition hover:border-[#d4af69]/40 hover:text-[#d4af69]"
           >
             <Minus size={14} className="cursor-pointer" />
           </button>
@@ -46,7 +47,8 @@ const CartItem = ({
           <button
             type="button"
             onClick={onIncrease}
-            className="rounded-md border border-[#d4af69]/20 bg-[#1b1413] p-1 transition hover:border-[#d4af69]/40"
+            aria-label="Aumentar quantidade"
+            className="rounded-md border border-[#d4af69]/20 bg-[#1b1413] p-1.5 transition hover:border-[#d4af69]/40 hover:text-[#d4af69]"
           >
             <Plus size={14} className="cursor-pointer" />
           </button>

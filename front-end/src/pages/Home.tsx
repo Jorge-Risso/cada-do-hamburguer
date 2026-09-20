@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Product from "../components/Product";
 import type { ProductType } from "../types/Product";
 
 const Home = () => {
   const [category, setCategory] = useState("hamburguer");
   const [products, setProducts] = useState<ProductType[]>([]);
+  const catalogRef = useRef<HTMLDivElement | null>(null);
 
   const categoryMap: Record<string, string> = {
     hamburguer: "hamburguer",
@@ -29,6 +30,7 @@ const Home = () => {
 
   const handleChangeCategory = (newCategory: string) => {
     setCategory(newCategory);
+    catalogRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   const getCategoryClass = (categoryName: string) => {
@@ -75,17 +77,27 @@ const Home = () => {
           </p>
 
           <div className="mt-6 flex flex-wrap gap-3">
-            <button className="action-button px-5 py-3 text-sm md:px-6">
+            <button
+              type="button"
+              onClick={() =>
+                catalogRef.current?.scrollIntoView({ behavior: "smooth" })
+              }
+              className="action-button cursor-pointer px-5 py-3 text-sm md:px-6"
+            >
               Ver cardápio
             </button>
-            <button className="rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-bold text-white transition hover:border-[#d4af69]/40 hover:text-[#d4af69]">
+            <button
+              type="button"
+              onClick={() => handleChangeCategory("todos")}
+              className="cursor-pointer rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-bold text-white transition hover:border-[#d4af69]/40 hover:text-[#d4af69]"
+            >
               Ofertas exclusivas
             </button>
           </div>
         </div>
       </section>
 
-      <section className="mb-6">
+      <section ref={catalogRef} className="mb-6">
         <div className="mb-4 flex items-center justify-between">
           <p className="text-sm font-bold uppercase tracking-[0.22em] text-[#d4af69]">
             Catálogo

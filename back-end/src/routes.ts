@@ -1,19 +1,31 @@
 import type { Request, Response } from "express";
 import { prisma } from "./db.js";
 import bcrypt from "bcrypt";
+
 import { Router } from "express";
+import { upload } from "./middlewares/upload-Middleware.js";
 import { auth, login, register, logout } from "./controller/userController.js";
 import {
   authMiddleware,
   adminMiddleware,
 } from "./middlewares/auth-Middleware.js";
-import { getProducts, deleteProduct } from "./controller/ProductController.js";
+import {
+  getProducts,
+  deleteProduct,
+  createProduct,
+} from "./controller/ProductController.js";
 import {
   getCartItems,
   addCartItem,
   updateCartItemQuantity,
 } from "./controller/cartItemController.js";
-import { createOrder } from "./controller/orderController.js";
+import {
+  createOrder,
+  getOrderById,
+  getOrders,
+  getMyOrders,
+  updateStatus,
+} from "./controller/orderController.js";
 
 export const router = Router();
 
@@ -24,6 +36,13 @@ router.post("/logout", authMiddleware, logout);
 
 //Rotas de produto
 router.get("/products", getProducts);
+router.post(
+  "/products",
+  authMiddleware,
+  adminMiddleware,
+  upload.single("img"),
+  createProduct,
+);
 router.delete(
   "/product-delete/:id",
   authMiddleware,
@@ -40,4 +59,13 @@ router.patch(
 );
 
 //Orders
+router.get("/orders", authMiddleware, adminMiddleware, getOrders);
+router.get("/orders/me", authMiddleware, getMyOrders);
+router.get("/orders/:id", authMiddleware, getOrderById);
+router.patch(
+  "/orders/:id/status",
+  authMiddleware,
+  adminMiddleware,
+  updateStatus,
+);
 router.post("/create-order", authMiddleware, createOrder);

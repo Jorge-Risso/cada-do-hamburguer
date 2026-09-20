@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "../components/Button";
+import Input from "../components/Input";
 import { useContext } from "react";
+import { Eye, EyeOff } from "lucide-react";
 import { UserContext } from "../contexts/UserContext";
 
 const Login = () => {
@@ -9,24 +11,19 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { setUser } = useContext(UserContext);
 
   const navigate = useNavigate();
 
-  // Input ajustado para responsividade
-  const Input = (props: React.InputHTMLAttributes<HTMLInputElement>) => {
-    return (
-      <input
-        {...props}
-        className="auth-input w-full rounded-xl px-3 py-2.5 text-sm outline-none transition focus:border-[#d4af69] focus:ring-2 focus:ring-[#d4af69]/30"
-      />
-    );
-  };
-
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+
+    if (isSubmitting) return;
+
     try {
+      setIsSubmitting(true);
       if (!email || !password) {
         setMessage("Email e senha são obrigatórios!");
         return;
@@ -41,16 +38,18 @@ const Login = () => {
       });
       const data = await response.json();
       if (!response.ok) {
-        setMessage(data.message);
+        setMessage(data.message || "Credenciais inválidas.");
+        return;
       }
-      if (response.status === 200) {
-        setMessage("");
-        navigate("/");
-        setUser(data.user);
-      }
+
+      setMessage("");
+      navigate("/");
+      setUser(data.user);
     } catch (error) {
       console.error("Erro ao fazer login:", error);
       setMessage("Erro ao fazer login. Tente novamente mais tarde.");
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
@@ -97,21 +96,28 @@ const Login = () => {
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-black focus:outline-none"
+              aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
+              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md p-1 text-gray-400 transition hover:text-[#d4af69] focus:outline-none"
             >
-              {showPassword ? "🙈" : "👁️"}
+              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
           </div>
-          <p className="text-red-500 text-sm font-bold text-center">
-            {message}
+          <p
+            className={`text-sm font-bold text-center ${
+              message ? "text-red-400" : "text-transparent"
+            }`}
+            aria-live="polite"
+          >
+            {message || "_"}
           </p>
         </div>
 
         {/* Botão */}
         <Button
-          title="Login"
+          title={isSubmitting ? "Entrando..." : "Login"}
           type="submit"
-          variant="cursor-pointer w-full bg-linear-to-r from-[#d4af69] to-[#b88939] hover:from-[#c79d4d] hover:to-[#a9722c] py-3 rounded-md font-bold text-[#1f1917] text-sm transition-all duration-200 transform hover:scale-105 active:scale-95"
+          disabled={isSubmitting}
+          variant="cursor-pointer w-full rounded-md bg-linear-to-r from-[#d4af69] to-[#b88939] px-4 py-3 text-sm font-bold text-[#1f1917] transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-70 hover:from-[#c79d4d] hover:to-[#a9722c]"
         />
 
         {/* Link de cadastro */}

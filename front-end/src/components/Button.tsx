@@ -2,13 +2,12 @@ type ButtonProps = {
   title: string;
   variant: string;
   type?: "button" | "submit" | "reset";
+  disabled?: boolean;
 };
 
-const Button = ({ title, variant, type }: ButtonProps) => {
-  //const default = cursor-pointer w-full bg-linear-to-r from-[#C92A0E] to-[#FF5E2B] hover:from-[#a81e05] hover:to-[#e03a1a] py-3 rounded-md font-bold text-white text-sm transition-all duration-200 transform hover:scale-105 active:scale-95"
-
+const Button = ({ title, variant, type, disabled = false }: ButtonProps) => {
   return (
-    <button type={type} className={variant}>
+    <button type={type} className={variant} disabled={disabled}>
       {title}
     </button>
   );

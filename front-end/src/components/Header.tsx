@@ -89,7 +89,7 @@ const Header = ({ setIsCartOpen }: HeaderProps) => {
 
         {user ? (
           <div className="flex flex-wrap items-center justify-end gap-2 text-white sm:gap-3 md:gap-4">
-            {user.type === "admin" && (
+            {user.type === "admin" ? (
               <div className="flex items-center gap-2 text-[#f5e7c2]">
                 <Link to="/" title="Cardápio">
                   <div className={getNavItemClass("/")}>
@@ -101,9 +101,24 @@ const Header = ({ setIsCartOpen }: HeaderProps) => {
                     <LayoutDashboard size={18} />
                   </div>
                 </Link>
-                <div className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-xl border border-white/10 bg-white/5 text-white/70 transition hover:border-[#d4af69]/40 hover:text-[#d4af69]">
-                  <Plus size={18} />
-                </div>
+                <Link to="/admin/produtos/novo" title="Adicionar produto">
+                  <div className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-xl border border-white/10 bg-white/5 text-white/70 transition hover:border-[#d4af69]/40 hover:text-[#d4af69]">
+                    <Plus size={18} />
+                  </div>
+                </Link>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2 text-[#f5e7c2]">
+                <Link to="/" title="Cardápio">
+                  <div className={getNavItemClass("/")}>
+                    <Box size={18} />
+                  </div>
+                </Link>
+                <Link to="/pedidos/me" title="Meus pedidos">
+                  <div className={getNavItemClass("/pedidos/me")}>
+                    <LayoutDashboard size={18} />
+                  </div>
+                </Link>
               </div>
             )}
 

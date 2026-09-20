@@ -1,6 +1,7 @@
 import Input from "../components/Input";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { Eye, EyeOff } from "lucide-react";
 import Button from "../components/Button";
 
 const Register = () => {
@@ -11,6 +12,7 @@ const Register = () => {
   const [cep, setCep] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [message, setMessage] = useState({
     text: "",
@@ -20,12 +22,15 @@ const Register = () => {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
+    if (isSubmitting) return;
+
     setMessage({
       text: "",
       type: "error",
     });
 
     try {
+      setIsSubmitting(true);
       const formData = {
         name,
         email,
@@ -70,14 +75,14 @@ const Register = () => {
 
       if (!response.ok) {
         setMessage({
-          text: data.message,
+          text: data.message || "Não foi possível concluir o cadastro.",
           type: "error",
         });
         return;
       }
 
       setMessage({
-        text: "Usuário cadastrado com sucesso!",
+        text: "Usuário cadastrado com sucesso! Agora faça login.",
         type: "success",
       });
 
@@ -95,6 +100,8 @@ const Register = () => {
         text: "Erro ao conectar com o servidor.",
         type: "error",
       });
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
@@ -102,7 +109,7 @@ const Register = () => {
     <div className="auth-shell flex min-h-screen items-center justify-center px-4">
       <form
         onSubmit={handleSubmit}
-        className="auth-card w-full max-w-md rounded-[2rem] p-8 sm:p-10"
+        className="auth-card w-full max-w-md rounded-4xl p-8 sm:p-10"
       >
         <div className="flex flex-col items-center">
           <Link to="/">
@@ -149,9 +156,10 @@ const Register = () => {
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-black"
+              aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
+              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md p-1 text-gray-400 transition hover:text-[#d4af69]"
             >
-              {showPassword ? "🙈" : "👁️"}
+              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
           </div>
 
@@ -167,9 +175,14 @@ const Register = () => {
             <button
               type="button"
               onClick={() => setShowConfirm(!showConfirm)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-black"
+              aria-label={
+                showConfirm
+                  ? "Ocultar confirmação de senha"
+                  : "Mostrar confirmação de senha"
+              }
+              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md p-1 text-gray-400 transition hover:text-[#d4af69]"
             >
-              {showConfirm ? "🙈" : "👁️"}
+              {showConfirm ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
           </div>
 
@@ -183,8 +196,9 @@ const Register = () => {
 
         {message.text && (
           <p
+            aria-live="polite"
             className={`text-sm font-bold text-center ${
-              message.type === "success" ? "text-green-500" : "text-red-500"
+              message.type === "success" ? "text-green-400" : "text-red-400"
             }`}
           >
             {message.text}
@@ -192,9 +206,10 @@ const Register = () => {
         )}
 
         <Button
-          title="Cadastrar"
+          title={isSubmitting ? "Cadastrando..." : "Cadastrar"}
           type="submit"
-          variant="cursor-pointer w-full bg-linear-to-r from-[#d4af69] to-[#b88939] hover:from-[#c79d4d] hover:to-[#a9722c] py-3 rounded-md font-bold text-[#1f1917] text-sm transition-all duration-200 transform hover:scale-105 active:scale-95"
+          disabled={isSubmitting}
+          variant="cursor-pointer w-full rounded-md bg-linear-to-r from-[#d4af69] to-[#b88939] px-4 py-3 text-sm font-bold text-[#1f1917] transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-70 hover:from-[#c79d4d] hover:to-[#a9722c]"
         />
 
         <p className="text-gray-400 text-center text-sm">
