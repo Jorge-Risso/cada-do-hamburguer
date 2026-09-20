@@ -158,7 +158,11 @@ const Product = ({
 
   return (
     <div className="product-card">
-      <img className="product-image" src={`./${img}`} alt={name} />
+      <img
+        className="product-image"
+        src={`${import.meta.env.VITE_API_URL}${img}`}
+        alt={name}
+      />
 
       <div className="product-info">
         <div className="product-header">

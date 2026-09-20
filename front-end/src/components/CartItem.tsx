@@ -25,10 +25,6 @@ const CartItem = ({
       <img
         src={`${import.meta.env.VITE_API_URL}${imgUrl}`}
         alt={title}
-        onError={(e) => {
-          console.log("imgUrl recebido:", imgUrl);
-          console.log("URL final:", e.currentTarget.src);
-        }}
         className="h-[90px] w-[90px] rounded-xl object-cover sm:h-25 sm:w-25"
       />
       <div className="flex-1 min-w-0">
