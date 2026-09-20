@@ -26,7 +26,7 @@ const Cart = ({ closeCart }: CartTypeProps) => {
   const updateItemQuantity = async (itemId: number, nextQuantity: number) => {
     try {
       const response = await fetch(
-        "http://localhost:3000/cart-items/update-quantity",
+        "http://fetch(`${import.meta.env.VITE_API_URL}:3000/cart-items/update-quantity",
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },

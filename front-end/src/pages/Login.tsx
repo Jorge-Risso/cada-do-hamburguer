@@ -125,7 +125,7 @@ const Login = () => {
           Não possui uma conta?{" "}
           <Link
             className="auth-link font-semibold transition-colors duration-300 hover:text-[#f5e7c2]"
-            to="/register"
+            to="fetch(`${import.meta.env.VITE_API_URL}"
           >
             Clique Aqui!
           </Link>

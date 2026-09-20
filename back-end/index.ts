@@ -7,7 +7,7 @@ import { router } from "./src/routes.js";
 const app = express();
 
 const allowedOrigins = [
-  "http://localhost:5173",
+  "http://fetch(`${import.meta.env.VITE_API_URL}:5173",
   "https://cada-do-hamburguer-git-main-project00s-projects.vercel.app",
 ];
 

@@ -35,7 +35,7 @@ const Product = ({
       }
       setIsDeleting(true);
       const response = await fetch(
-        `http://localhost:3000/product-delete/${id}`,
+        `http://fetch(`${import.meta.env.VITE_API_URL}:3000/product-delete/${id}`,
         {
           method: "DELETE",
         },

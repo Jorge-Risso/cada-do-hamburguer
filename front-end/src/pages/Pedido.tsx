@@ -48,8 +48,8 @@ const Pedidos = ({ mode }: { mode: PedidoMode }) => {
 
         const endpoint =
           mode === "admin"
-            ? "http://localhost:3000/orders"
-            : "http://localhost:3000/orders/me";
+            ? "http://fetch(`${import.meta.env.VITE_API_URL}:3000/orders"
+            : "http://fetch(`${import.meta.env.VITE_API_URL}:3000/orders/me";
 
         const response = await fetch(endpoint, {
           credentials: "include",
@@ -91,7 +91,7 @@ const Pedidos = ({ mode }: { mode: PedidoMode }) => {
   ) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/orders/${orderId}/status`,
+        `http://fetch(`${import.meta.env.VITE_API_URL}:3000/orders/${orderId}/status`,
         {
           method: "PATCH",
           credentials: "include",
