@@ -10,6 +10,7 @@ const allowedOrigins = [
   "http://localhost:5173",
   "https://cada-do-hamburguer-git-main-project00s-projects.vercel.app",
   "https://cada-do-hamburguer-6u2tz98q3-project00s-projects.vercel.app",
+  "https://cada-do-hamburguer-7ie7cdxvf-project00s-projects.vercel.app",
 ];
 
 app.use(express.json({ limit: "10mb" }));
