@@ -138,7 +138,7 @@ export async function updateStatus(req: Request, res: Response) {
     });
 
     if (!order) {
-      return res.sendStatus(404).json({ message: "Pedido não encontrado." });
+      return res.status(404).json({ message: "Pedido não encontrado." });
     }
 
     const { status } = req.body;

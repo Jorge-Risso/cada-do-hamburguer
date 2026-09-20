@@ -117,7 +117,7 @@ export async function updateStatus(req, res) {
             where: { id: Number(req.params.id) },
         });
         if (!order) {
-            return res.sendStatus(404).json({ message: "Pedido não encontrado." });
+            return res.status(404).json({ message: "Pedido não encontrado." });
         }
         const { status } = req.body;
         if (!["pendente", "confirmado", "retirado", "cancelado"].includes(status)) {
