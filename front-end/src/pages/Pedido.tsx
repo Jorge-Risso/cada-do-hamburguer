@@ -21,12 +21,15 @@ const normalizeStatus = (status: string): OrderStatus => {
     case "confirmado":
     case "done":
       return "confirmado";
+
     case "retirado":
       return "retirado";
+
     case "cancelled":
     case "canceled":
     case "cancelado":
       return "cancelado";
+
     case "pending":
     case "pendente":
     default:
@@ -48,8 +51,8 @@ const Pedidos = ({ mode }: { mode: PedidoMode }) => {
 
         const endpoint =
           mode === "admin"
-            ? "http://fetch(`${import.meta.env.VITE_API_URL}:3000/orders"
-            : "http://fetch(`${import.meta.env.VITE_API_URL}:3000/orders/me";
+            ? `${import.meta.env.VITE_API_URL}/orders`
+            : `${import.meta.env.VITE_API_URL}/orders/me`;
 
         const response = await fetch(endpoint, {
           credentials: "include",
@@ -57,16 +60,19 @@ const Pedidos = ({ mode }: { mode: PedidoMode }) => {
 
         if (!response.ok) {
           const data = await response.json().catch(() => ({}));
+
           throw new Error(
             data.message || "Não foi possível carregar os pedidos.",
           );
         }
 
         const data = await response.json();
+
         setOrders(Array.isArray(data) ? data : []);
       } catch (err) {
         const message =
           err instanceof Error ? err.message : "Erro ao carregar pedidos.";
+
         setError(message);
       } finally {
         setLoading(false);
@@ -91,30 +97,39 @@ const Pedidos = ({ mode }: { mode: PedidoMode }) => {
   ) => {
     try {
       const response = await fetch(
-        `http://fetch(`${import.meta.env.VITE_API_URL}:3000/orders/${orderId}/status`,
+        `${import.meta.env.VITE_API_URL}/orders/${orderId}/status`,
         {
           method: "PATCH",
           credentials: "include",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ status: newStatus }),
+          body: JSON.stringify({
+            status: newStatus,
+          }),
         },
       );
 
       if (!response.ok) {
         const data = await response.json().catch(() => ({}));
+
         throw new Error(data.message || "Não foi possível atualizar o status.");
       }
 
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
-          order.id === orderId ? { ...order, status: newStatus } : order,
+          order.id === orderId
+            ? {
+                ...order,
+                status: newStatus,
+              }
+            : order,
         ),
       );
     } catch (error) {
       const message =
         error instanceof Error ? error.message : "Erro ao atualizar status.";
+
       setError(message);
     }
   };
@@ -135,10 +150,12 @@ const Pedidos = ({ mode }: { mode: PedidoMode }) => {
             <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#d4af69]">
               {mode === "admin" ? "Painel" : "Histórico"}
             </p>
+
             <h1 className="mt-2 text-2xl font-black text-white">
               {mode === "admin" ? "Pedidos" : "Meus pedidos"}
             </h1>
           </div>
+
           <span className="rounded-full border border-[#d4af69]/25 bg-[#7a2c2c]/10 px-3 py-1 text-sm font-bold text-[#d4af69]">
             {filteredOrders.length} ativos
           </span>
@@ -151,18 +168,21 @@ const Pedidos = ({ mode }: { mode: PedidoMode }) => {
           >
             Pendentes
           </button>
+
           <button
             onClick={() => handleChangeCategory("confirmado")}
             className={getCategoryClass("confirmado")}
           >
             Confirmados
           </button>
+
           <button
             onClick={() => handleChangeCategory("retirado")}
             className={getCategoryClass("retirado")}
           >
             Retirados
           </button>
+
           <button
             onClick={() => handleChangeCategory("cancelado")}
             className={getCategoryClass("cancelado")}
