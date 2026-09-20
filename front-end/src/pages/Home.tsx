@@ -44,10 +44,27 @@ const Home = () => {
   const getProducts = async () => {
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/products`);
+
+      if (!response.ok) {
+        throw new Error("Não foi possível carregar os produtos.");
+      }
+
       const data = await response.json();
-      setProducts(data.products);
+
+      if (Array.isArray(data)) {
+        setProducts(data);
+        return;
+      }
+
+      if (Array.isArray(data.products)) {
+        setProducts(data.products);
+        return;
+      }
+
+      setProducts([]);
     } catch (error) {
-      console.log(error);
+      console.error("Erro ao buscar produtos:", error);
+      setProducts([]);
     }
   };
 
