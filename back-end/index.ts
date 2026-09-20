@@ -3,8 +3,10 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import { connection } from "./src/db.js";
 import { router } from "./src/routes.js";
+import path from "path";
 
 const app = express();
+app.use(express.static(path.resolve("public")));
 
 const allowedOrigins = [
   "http://localhost:5173",

@@ -23,7 +23,7 @@ const CartItem = ({
   return (
     <div className="flex items-center gap-3 rounded-2xl border border-[#d4af69]/10 bg-[#2a211e] p-3">
       <img
-        src={imgUrl}
+        src={`${import.meta.env.VITE_API_URL}${imgUrl}`}
         alt={title}
         className="h-[90px] w-[90px] rounded-xl object-cover sm:h-25 sm:w-25"
       />
