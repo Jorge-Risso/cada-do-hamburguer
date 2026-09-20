@@ -43,7 +43,7 @@ export const createProduct = async (req: Request, res: Response) => {
 
     const { name, description, price, category } = parsedBody.data;
 
-    const img = `/products/${req.file.filename}`;
+    const img = `/${req.file.filename}`;
 
     const product = await prisma.product.create({
       data: {
