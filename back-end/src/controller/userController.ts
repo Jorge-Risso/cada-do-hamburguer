@@ -70,7 +70,7 @@ export const login = async (req: Request, res: Response) => {
     res.cookie("user", token, {
       maxAge: 60 * 60 * 1000,
       httpOnly: true,
-      sameSite: "lax",
+      sameSite: isProduction ? "none" : "lax",
       secure: isProduction,
       path: "/",
     });
@@ -97,12 +97,14 @@ export const logout = (req: Request, res: Response) => {
   const { user } = req.cookies;
   const isProduction = process.env.NODE_ENV === "production";
   if (user) {
-    res.clearCookie("user", {
-      httpOnly: true,
-      sameSite: "lax",
-      secure: isProduction,
-      path: "/",
-    });
+    if (user) {
+      res.clearCookie("user", {
+        httpOnly: true,
+        sameSite: isProduction ? "none" : "lax",
+        secure: isProduction,
+        path: "/",
+      });
+    }
   }
   res.status(200).json({ message: "Logout realizado com sucesso!" });
 };
